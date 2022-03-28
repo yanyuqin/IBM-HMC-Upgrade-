@@ -1,4 +1,4 @@
-##VIOS 增加VLAN脚本
+## VIOS 增加VLAN脚本
 ``` 
 for i in `lssyscfg -r sys -F name`
 do 
@@ -13,7 +13,7 @@ do
 done
 ```
 有报错，有两个VIOS RMC未建立连接。 *HSCL2957 管理控制台与分区 2 之间当前未建立 RMC 连接，或者该分区不支持动态分区操作。* 
-##保存当前profile脚本
+## 保存当前profile脚本
 
 ``` 
 for i in `lssyscfg -r sys -F name`
@@ -27,7 +27,7 @@ do
 done
 ```
 
-##检查哪个出错VIOS
+## 检查哪个出错VIOS
 ``` 
  for i in `lssyscfg -r sys -F name`
  do 
@@ -36,7 +36,7 @@ done
  done
 ```
 
-##RMC故障处理
+## RMC故障处理
 
 [参考](http://emmanuel.iffly.free.fr/doku.php?id=aix:rsct_reconfig) 
 
