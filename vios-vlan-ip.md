@@ -1,4 +1,5 @@
 ## VIOS 增加VLAN脚本
+HMC上执行
 ``` 
 for i in `lssyscfg -r sys -F name`
 do 
@@ -14,6 +15,7 @@ done
 ```
 有报错，有两个VIOS RMC未建立连接。 *HSCL2957 管理控制台与分区 2 之间当前未建立 RMC 连接，或者该分区不支持动态分区操作。* 
 ## 保存当前profile脚本
+HMC上执行
 
 ``` 
 for i in `lssyscfg -r sys -F name`
@@ -28,6 +30,7 @@ done
 ```
 
 ## 检查哪个出错VIOS
+HMC上执行
 ``` 
  for i in `lssyscfg -r sys -F name`
  do 
@@ -46,11 +49,11 @@ cat /etc/ct_node_id
 # /usr/sbin/rsct/bin/lsnodeid
 2641-036 The node does not have an assigned node identifier.
 
-11111
+##方案1
 # /usr/sbin/rsct/install/bin/recfgct -n            #resets the node id file (default option)
 # /usr/sbin/rsct/install/bin/recfgct -s            #saves the node id file.
 
-222222
+##方案2
 [root@testsrv]/root# /usr/sbin/rsct/install/bin/uncfgct -n
 [root@testsrv]/root# /usr/sbin/rsct/install/bin/cfgct
 
@@ -61,6 +64,18 @@ Restart RMC on AIX client.
 [root@aix:/] /usr/sbin/rsct/bin/rmcctrl -A
 [root@aix:/] /usr/sbin/rsct/bin/rmcctrl -p
 
+```
+## 创建虚拟网卡配置IP地址
+``` 
+cat  hp-lpm-ip.cfg |while read hostn ipaddr
+do
+#ssh $host "ioscli hostname;ioscli mkvdev -vlan ent25 -tagid 346"
+echo $hostn
+ssh -n $hostn "ioscli mkvdev -vlan ent25 -tagid 346"
+echo "en26 add ip address"
+ssh -n $hostn "ioscli mktcpip -hostname $hostn-lpm -interface en26 -inetaddr $ipaddr -netmask 255.255.255.0"
+ssh -n $hostn "chdev -dev en26 -attr mtu_bypass=on mtu=9000 rfc1323=1 tcp_recvspace=262144 tcp_sendspace=262144 tcp_nodelay=1"
+done
 ```
 
 
