@@ -1,3 +1,22 @@
+## VIOS修改登录提示及shell
+修改后支持主机名和目录作为PS1显示，同时支持上下键翻页
+```
+$ oem_setup_env
+
+# echo "export ENV=/home/padmin/.kshrc" >> /home/padmin/.profile
+
+# echo "export HOST=\"\$(/usr/bin/uname -n)\"\nif [ \"\`whoami\`\" = \"root\" ]; then\n  PS1=\"\`whoami\`@\$HOST:\\\$PWD # \"\nelse\n  PS1=\"\`whoami\`@\$HOST:\\\$PWD $ \"\nfi\n\nset -o emacs;alias -x __A=\"\$(echo '\\\\020')\"; alias -x __B=\"\$(echo '\\\\016')\"; alias -x __C=\"\$(echo '\\\\006')\"; alias -x __D=\"\$(echo '\\\\002')\"; alias -x __H=\"\$(echo '\\\\001')\"; alias -x __Y=\"\$(echo '\\\\005')\"\n" >> /home/padmin/.kshrc
+
+#批处理
+dsh -c -g vioshosts "oem_setup_env<< EOF
+hostname 
+cp /NAS/kshrc /home/padmin/.kshrc
+cp /NAS/padmin.profile /home/padmin/.profile
+
+EOF"
+
+```
+
 ## VIOS 增加VLAN脚本
 HMC上执行
 ``` 
