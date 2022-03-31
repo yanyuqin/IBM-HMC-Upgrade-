@@ -5,7 +5,7 @@ https://developer.ibm.com/articles/au-aix-updating-vios-to-higher-level/
 
 ```
 root: 
-loopmount -i /FY4AOSBACK/H22065994.iso -o "-V cdrfs -o ro " -m /mnt
+loopmount -i /NAS/H22065994.iso -o "-V cdrfs -o ro " -m /mnt
 ls /mnt
 lspv
 
