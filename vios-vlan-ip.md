@@ -97,5 +97,49 @@ ssh -n $hostn "chdev -dev en26 -attr mtu_bypass=on mtu=9000 rfc1323=1 tcp_recvsp
 done
 ```
 
+## 修改分区打开SRR功能
+```
+lssyscfg -r lpar -m $MC -F name,lpar_env,curr_lpar_proc_compat_mode,simplified_remote_restart_capable,simplified_remote_restart_capable|sed s/,/\\n/g
 
+
+
+for MC in `lssyscfg -r sys -F name`
+do 
+echo $MC############################
+lssyscfg -r lpar -m $MC -F name,lpar_env,curr_lpar_proc_compat_mode,simplified_remote_restart_capable,simplified_remote_restart_capable|sed s/,/\\n/g
+done
+
+
+lssyscfg -r sys -F type_model*serial_num | while read machine
+do 
+   #lssyscfg -r lpar -m $MC -F name,lpar_env,curr_lpar_proc_compat_mode,simplified_remote_restart_capable,simplified_remote_restart_capable|sed s/,/\\n/g
+   lssyscfg -r lpar -m $MC -F name,lpar_env  |sed s/,/\ /g |while read lpn,lpos
+  do 
+    if ($lpos==aixlinux) 
+	 { 
+	    echo $lpn##$lpos;
+	 };
+  done 
+done
+
+
+lssyscfg -r sys -F type_model*serial_num | while read machine  
+do 
+   #lssyscfg -r lpar -m $MC -F lpar_id,lpar_env,curr_lpar_proc_compat_mode,simplified_remote_restart_capable,simplified_remote_restart_capable|sed s/,/\\n/g
+  lssyscfg -r lpar -m $machine -F lpar_id,lpar_env  |sed s/,/\ /g|while read lpid lpos
+  do 
+    #echo  $lpos $lpn
+	if [ $lpos == 'aixlinux' ]
+ 	 then  
+	 echo $machine $lpid
+	 chsyscfg -m $machine -r lpar --id $lpid -i "simplified_remote_restart_capable=1"
+	 
+	fi
+  done 
+done
+
+chsyscfg -m $MC -r lpar --id 3 -i "simplified_remote_restart_capable=1,remote_restart_capable=1"
+
+
+```
 
