@@ -18,6 +18,8 @@ EOF"
 ```
 
 ## VIOS 增加VLAN脚本
+HA  bridge 101  add 348 349  ,bridge 102  add 347
+HP  bridge 101  add 342  ,bridge 102  add 346
 HMC上执行
 ``` 
 for i in `lssyscfg -r sys -F name`
