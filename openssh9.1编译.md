@@ -1,8 +1,11 @@
 # 编译准备
 [openssh-9.0p1.tar.gz](https://mirrors.aliyun.com/pub/OpenBSD/OpenSSH/portable/openssh-9.0p1.tar.gz) 
 需要安装zlib和zlib开发包，
+
 openssl.base            1.1.1.1200  COMMITTED  Open Secure Socket Layer   IBM自带的
-gcc   
+
+gcc
+
 perl     IBM自带的
 
 
